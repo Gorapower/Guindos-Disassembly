@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
  
-public class realdeal {
+public class realdealtest {
      static ArrayList<String> data = new ArrayList<String>();
     static StringBuffer output = new StringBuffer();
     static int pairsToRead;
@@ -20,6 +20,8 @@ public class realdeal {
     static int temp;
     static String tempString;
     static int bin;
+      final static String FILE_NAME = "hello.chop";
+           final static String OUTPUT_FILE_NAME = "hellows.txt";
     public static void main(String[] args) throws IOException {
         
        String dataFile  = "hello.chop";
@@ -29,51 +31,35 @@ public class realdeal {
          int count;
          StringBuilder sb = new StringBuilder();
          StringBuilder s3=new StringBuilder();
-         String line;
+          realdealtest binary = new realdealtest();
+          byte[] bytes = binary.readSmallBinaryFile(FILE_NAME);
+         
             String src2=new String();
-        try (BufferedReader input = openFile(dataFile )) {
-            
-            
-            while ((line = input.readLine()) != null) {
-                       
-                        src2=line.replace(" ","");
-                        bin=src2.getBytes();
-                        System.out.println("imprimir el archivo\n"+src2);
-                        System.out.println("impresion contenido en binary\n"+bin);
-                        
-                        
-                        for(byte b:bin)
+     
+          for(byte b:bytes)
                         {
                             s3.append(String.format("%02X",b));
-                        
                         }
-                        
-                        
-                        System.out.println("tamanio de hex\n"+s3.length());
-                        int totalpares=s3.length()/2;
-                        System.out.println("pares totales:\n"+totalpares);
-                      
-                               for(String part:getParts(s3.toString(),2))
+          for(String part:getParts(s3.toString(),2))
                         {
                             //string full almacena el par actual
                             String full=part;
                             data.add(full);//imprime pares bandera decimal
                         }
-                   
+         System.out.println("tamanio de hex\n"+s3.length());
+         int totalpares=s3.length()/2;
+         System.out.println("pares totales:\n"+totalpares);
                         //ciclo para divir en pares
-                      
-             
-            }
+        binary.writeSmallBinaryFile(bytes, OUTPUT_FILE_NAME);
             System.out.println("impresion del archivo en hex\n"+s3.toString());
-        }
-         for(int e=24;e<data.size();e++)
+        
+         for(int e=14;e<data.size();e++)
          {
             System.out.println("par: " +e+ " el par es :" +data.get(e));
             }
-            int d=24;
+            int d=14;
             String temp1;
-            
-                message.append("(C)CHUNKUN\n");
+            message.append("(C)CHUNKUN\n");
          while(d<data.size())
             {
                 temp1=data.get(d);
@@ -179,7 +165,7 @@ public class realdeal {
                                     break;
                                 case "1A":
                                   //write to file "PUSHKS"
-                                     message.append("pushks ");
+                                   message.append("pushks ");
                                   String temp20=data.get(d+1);
                                   String temp30;
                                   d=d+2;
@@ -292,7 +278,7 @@ public class realdeal {
                                 case "35":
                                   //write to file "JMPLT"
                                     message.append("jmplt fin");
-                                d=14;
+                              
                                 message.append("\n");
                                     break;
                                 case "36":
@@ -303,6 +289,17 @@ public class realdeal {
                                     break;
                                 case "38":
                                   //write to file "STKX"
+                               message.append("STKX");
+                               
+                                String temp60;
+                                int aa=0;
+                                while(aa<4){
+                                temp60=data.get(d+aa);
+                                int decimal2 = Integer.parseInt(temp60, 16);
+                                message.append(decimal2);
+                                aa++;
+                               }
+                               d=d+5;
                                     break;
                                 case "39":
                                  //write to file "INC"
@@ -321,15 +318,27 @@ public class realdeal {
                                     break;
                                 case "3C":
                                 //write to file "SUB"
+                                message.append("SUB");
+                                d=d+1;
+                                message.append("\n");
                                 break;
                                  case "3D":
                                 //write to file "MUL"
+                                message.append("MUL");
+                                d=d+1;
+                                message.append("\n");
                                 break;
                                  case "3E":
                                 //write to file "DIV"
+                                message.append("DIV");
+                                d=d+1;
+                                message.append("\n");
                                 break;
                                  case "3F":
                                 //write to file "MOD"
+                                message.append("MOD");
+                                d=d+1;
+                                message.append("\n");
                                 break;
                                  case "40":
                                 //write to file "CMP"
@@ -341,19 +350,21 @@ public class realdeal {
                                     break;
                             }
                             
-                            System.out.print(message);
+                           
                         }
+                         System.out.print(message);
                         
     }
  
-    private static BufferedReader openFile(String fileName)
-            throws IOException {
-        // Don't forget to add buffering to have better performance!
-        return new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(fileName),
-                        StandardCharsets.UTF_8));
-    }
+         byte[] readSmallBinaryFile(String aFileName) throws IOException {
+        Path path = Paths.get(aFileName);
+        return Files.readAllBytes(path);
+      }
+      
+      void writeSmallBinaryFile(byte[] aBytes, String aFileName) throws IOException {
+        Path path = Paths.get(aFileName);
+        Files.write(path, aBytes); //creates, overwrites
+      }
       private static List<String> getParts(String string, int partitionSize) {
         List<String> parts = new ArrayList<String>();
         int len = string.length();
