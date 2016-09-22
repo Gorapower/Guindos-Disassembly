@@ -20,11 +20,10 @@ public class realdealtest {
     static int temp;
     static String tempString;
     static int bin;
-      final static String FILE_NAME = "hello.chop";
-           final static String OUTPUT_FILE_NAME = "hellows.txt";
+      final static String FILE_NAME = "fib.chop";
+           final static String OUTPUT_FILE_NAME = "fibs.txt";
     public static void main(String[] args) throws IOException {
         
-       String dataFile  = "hello.chop";
        byte[] bin;
        
          int temp3=0;
@@ -46,28 +45,30 @@ public class realdealtest {
                             String full=part;
                             data.add(full);//imprime pares bandera decimal
                         }
-         System.out.println("tamanio de hex\n"+s3.length());
+        // System.out.println("tamanio de hex\n"+s3.length());
          int totalpares=s3.length()/2;
-         System.out.println("pares totales:\n"+totalpares);
+         //System.out.println("pares totales:\n"+totalpares);
                         //ciclo para divir en pares
         binary.writeSmallBinaryFile(bytes, OUTPUT_FILE_NAME);
             System.out.println("impresion del archivo en hex\n"+s3.toString());
         
-         for(int e=14;e<data.size();e++)
+         /*for(int e=14;e<data.size();e++)
          {
             System.out.println("par: " +e+ " el par es :" +data.get(e));
-            }
+            }*/
             int d=14;
             String temp1;
             message.append("(C)CHUNKUN\n");
          while(d<data.size())
             {
                 temp1=data.get(d);
-                System.out.println(temp1);
+                //System.out.println(temp1);
+                //la bandera de arriba se usa para saber a que case esta entrando el programa
                 switch(temp1){
                                 case "00":
                                  message.append("HALT");
                                 message.append("\n");
+                                d=d+1;
                                 //write to file "HALT"
                                     break;
                                 case "01":
@@ -229,7 +230,7 @@ public class realdealtest {
                                     break;
                                 case "27":
                                 //write to file "RDI"
-                                  message.append("pushi var");
+                                  message.append("rdi var");
                                 d=d+3;
                                 message.append("\n");
                                     break;
@@ -260,7 +261,7 @@ public class realdealtest {
                                 case "30":
                                 //write to file "JMP"
                                   message.append("jmp loop");
-                                d=0;
+                                d=d+3;
                                 message.append("\n");
                                     break;
                                 case "31":
@@ -280,6 +281,7 @@ public class realdealtest {
                                     message.append("jmplt fin");
                               
                                 message.append("\n");
+                                d=d+3;
                                     break;
                                 case "36":
                                   //write to file "JMPLE"
@@ -304,7 +306,7 @@ public class realdealtest {
                                 case "39":
                                  //write to file "INC"
                                    message.append("INC");
-                                d=d+1;
+                                d=d+3;
                                 message.append("\n");
                                     break;
                                 case "3A":
@@ -350,7 +352,7 @@ public class realdealtest {
                                     break;
                             }
                             
-                           
+                        
                         }
                          System.out.print(message);
                         
